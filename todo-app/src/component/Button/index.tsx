@@ -1,9 +1,11 @@
-import styled from '@emotion/styled';
 import React from 'react';
+import styled from '@emotion/styled/macro';
+import { css } from '@emotion/react';
 
 interface ButtonProps {
-  value: string;
-  onClick?: () => void;
+  type?: 'button' | 'reset' | 'submit' | undefined;
+  value: 'add' | 'del';
+  onClick: () => void;
 }
 
 const ButtonStyled = styled.button`
@@ -17,27 +19,31 @@ const ButtonStyled = styled.button`
   cursor: pointer;
   border: none;
   border-radius: 40px;
+
   &:active {
     box-shadow: none;
     position: relative;
     top: 2px;
   }
+  ${props=> props.value === 'add' && AddButton};
+  ${props=> props.value === 'del' && DelButton};
+`;
 
-  background-color: ${(props) =>
-    props.value === 'add'
-      ? 'rgb(234, 154, 190)'
-      : 'rgb(154, 178, 234)'};
-  box-shadow: ${(props) =>
-    props.value === 'add'
-      ? '0 2px 2px rgb(203, 93, 139)'
-      : '0 2px 2px rgb(93, 104, 203)'};
+const AddButton = css`
+  background-color: rgb(234, 154, 190);
+  box-shadow: 0 2px 2px rgb(203, 93, 139);
+`;
+
+const DelButton = css`
+  background-color: rgb(154, 171, 234);
+  box-shadow: 0 2px 2px rgb(93, 104, 203);
 `;
 
 export const Button: React.FC<ButtonProps> = (props: ButtonProps) => {
-  const { value } = props;
+  const { type, value, onClick } = props;
   const label = value === 'add' ? '+' : '−';
   return (
-    <ButtonStyled type='button' value={value}>
+    <ButtonStyled type={type} value={value} onClick={onClick}>
       {label}
     </ButtonStyled>
   );

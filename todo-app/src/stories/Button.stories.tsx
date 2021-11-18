@@ -9,27 +9,31 @@ export default {
   title: 'Example/Button',
   component: Button,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-  // argTypes: {
-  //   onClick: () => console.log('')
-  // },
+  argTypes: {
+    onClick: () => console.log('')
+  },
 } as ComponentMeta<typeof Button>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof Button> = (args) => (
-  <Button value={args.value}></Button>
+  <Button type={args.type} value={args.value} onClick={args.onClick}></Button>
 );
 
 export const Primary = Template.bind({});
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Primary.args = {
-  value:'add'
+  type:'button',
+  value: 'add',
+      onClick: () => console.log('')
 };
 
 
 export const Secondary = Template.bind({});
 Secondary.args = {
-  value:'del'
+  type: 'button',
+  value: 'del',
+  onClick: () => console.log(''),
 };
 
 // export const Large = Template.bind({});

@@ -1,18 +1,16 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { idText } from 'typescript';
 
 interface TodoFormProps {
-  index: string;
-  todoTask: string;
-  setTask: () => string;
+  value: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const TodoFormStyled = styled.input``;
 
-const TodoForm: React.FC<TodoFormProps> = (props: TodoFormProps) => {
-  const { index, todoTask, setTask } = props;
+export const TodoForm: React.FC<TodoFormProps> = (props: TodoFormProps) => {
+  const { value, onChange } = props;
   return (
-    <TodoFormStyled></TodoFormStyled>
+    <TodoFormStyled type="text" value={value} onChange={onChange}></TodoFormStyled>
   );
 };
