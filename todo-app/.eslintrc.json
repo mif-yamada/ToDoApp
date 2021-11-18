@@ -14,12 +14,14 @@
         "ecmaFeatures": {
             "jsx": true
         },
-        "ecmaVersion": 11
+        "ecmaVersion": 12
     },
     "plugins": [
         "react",
         "@typescript-eslint"
     ],
     "rules": {
+      "semi":["error","always"],
+      "no-console":"warn"
     }
 }
