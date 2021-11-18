@@ -21,6 +21,7 @@ const App: React.FC = () => {
     setTaskList((taskList) => [...taskList, task]);
     setTask('');
   };
+
   // TODO:削除ボタン
   // const delTask = () => {
   //   taskList
