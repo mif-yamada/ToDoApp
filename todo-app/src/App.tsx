@@ -14,8 +14,8 @@ const AppStyled = styled.div`
 const App: React.FC = () => {
   const [task, setTask] = useState<string>('');
   const [itemList, setItemList] = useState<TodoItemProps[]>([]);
-  const [isEdit, setIsEdit] = useState<boolean>(false);
   const [editTask, setEditTask] = useState<string>('');
+  const [editTaskId, setEditTaskId] = useState<string>('');
 
   const handleNewTask = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTask(e.target.value);
@@ -34,27 +34,29 @@ const App: React.FC = () => {
     setItemList(newItemList);
   };
 
-  const editTime = (e: React.FocusEvent<HTMLInputElement>) => {
-    setEditTask(e.target.value);
-    setIsEdit(true);
-  };
-
   const editItem = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(isEdit);
+    setEditTaskId(e.target.id);
     setEditTask(e.target.value);
   };
 
-  const setEditItem = (e: React.FocusEvent<HTMLInputElement>) => {
-    const editItemId = e.target.id;
-    const newTaskList = itemList.map((item) =>
-      item.id === editItemId
-        ? { ...item, task: e.target.value }
-        : { ...item, task: task }
-    );
-    setItemList(newTaskList);
-    setEditTask('');
-    setIsEdit(false);
-  };
+  useEffect(()=>{
+    setItemList(itemList.map((item) =>
+      item.id === editTaskId ? { ...item, task: editTask } : item
+    ));
+  },[editTask]);
+
+  // const setEditItem = () => {
+  //   const newTaskList = itemList.map((item) =>
+  //     item.id === editId ? { ...item, task: editTask } : { ...item, task: task }
+  //   );
+  //   setItemList(newTaskList);
+  // };
+
+      // setItemList(
+      //   itemList.map((item) =>
+      //     item.id === editTaskId ? { ...item, task: editTask } : item
+      //   )
+      // );
 
   return (
     <AppStyled>
@@ -68,12 +70,9 @@ const App: React.FC = () => {
         </form>
         <TodoList
           items={itemList}
-          edit={isEdit}
-          editTask={editTask}
           delTodo={delTask}
           onChangeItem={editItem}
-          onFocusItem={editTime}
-          onBlurItem={setEditItem}
+          // onBlurItem={setEditItem}
         ></TodoList>
       </section>
     </AppStyled>

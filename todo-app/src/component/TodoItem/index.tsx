@@ -6,7 +6,6 @@ export interface TodoItemProps {
   task: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
-  onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 const TodoItemStyled = styled.input`
@@ -16,7 +15,7 @@ const TodoItemStyled = styled.input`
 `;
 
 export const TodoItem: React.FC<TodoItemProps> = (props: TodoItemProps) => {
-  const { id, task, onChange, onBlur, onFocus } = props;
+  const { id, task, onChange, onBlur} = props;
   return (
     <TodoItemStyled
       type='text'
@@ -24,7 +23,6 @@ export const TodoItem: React.FC<TodoItemProps> = (props: TodoItemProps) => {
       value={task}
       onChange={onChange}
       onBlur={onBlur}
-      onFocus={onFocus}
     ></TodoItemStyled>
   );
 };

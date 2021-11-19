@@ -6,12 +6,9 @@ import { Button } from '../Button';
 import { TodoItem, TodoItemProps } from '../TodoItem';
 interface TodoListProps {
   items: TodoItemProps[];
-  edit?: boolean;
-  editTask: string;
   delTodo: (e: React.MouseEvent<HTMLElement>) => void;
   onChangeItem?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlurItem?: (e: React.FocusEvent<HTMLInputElement>) => void;
-  onFocusItem?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 const TodoListStyled = styled.ul`
@@ -34,12 +31,9 @@ const TodoItemsStyled = styled.li`
 export const TodoList: React.FC<TodoListProps> = (props: TodoListProps) => {
   const {
     items,
-    edit,
-    editTask,
     delTodo,
     onChangeItem,
     onBlurItem,
-    onFocusItem,
   } = props;
   return (
     <TodoListStyled>
@@ -49,10 +43,9 @@ export const TodoList: React.FC<TodoListProps> = (props: TodoListProps) => {
           <TodoItemsStyled key={uniqueId}>
             <TodoItem
               id={item.id}
-              task={edit ? editTask : item.task}
+              task={item.task}
               onChange={onChangeItem}
               onBlur={onBlurItem}
-              onFocus={onFocusItem}
             ></TodoItem>
             <Button
               id={item.id}
