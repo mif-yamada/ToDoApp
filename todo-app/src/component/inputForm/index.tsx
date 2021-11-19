@@ -6,7 +6,11 @@ interface TodoFormProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const TodoFormStyled = styled.input``;
+const TodoFormStyled = styled.input`
+  display: inline-block;
+  width:300px;
+  height:30px;
+`;
 
 export const TodoForm: React.FC<TodoFormProps> = (props: TodoFormProps) => {
   const { value, onChange } = props;
