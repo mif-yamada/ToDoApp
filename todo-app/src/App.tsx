@@ -39,24 +39,23 @@ const App: React.FC = () => {
     setEditTask(e.target.value);
   };
 
-  useEffect(()=>{
-    setItemList(itemList.map((item) =>
+  useEffect(() => {
+    setItemList(
+      itemList.map((item) =>
+        item.id === editTaskId ? { ...item, task: editTask } : item
+      )
+    );
+  }, [editTask]);
+
+  // TODO: onBlur編集適応
+  const setEditItem = () => {
+    const newTaskList = itemList.map((item) =>
       item.id === editTaskId ? { ...item, task: editTask } : item
-    ));
-  },[editTask]);
-
-  // const setEditItem = () => {
-  //   const newTaskList = itemList.map((item) =>
-  //     item.id === editId ? { ...item, task: editTask } : { ...item, task: task }
-  //   );
-  //   setItemList(newTaskList);
-  // };
-
-      // setItemList(
-      //   itemList.map((item) =>
-      //     item.id === editTaskId ? { ...item, task: editTask } : item
-      //   )
-      // );
+    );
+    setItemList(newTaskList);
+    setEditTaskId('');
+    setEditTask('');
+  };
 
   return (
     <AppStyled>
@@ -64,10 +63,8 @@ const App: React.FC = () => {
         <h1>TODO-APP</h1>
       </header>
       <section>
-        <form>
-          <TodoForm task={task} onChange={handleNewTask}></TodoForm>
-          <Button type='button' value='add' onClick={addTask}></Button>
-        </form>
+        <TodoForm task={task} onChange={handleNewTask}></TodoForm>
+        <Button type='button' value='add' onClick={addTask}></Button>
         <TodoList
           items={itemList}
           delTodo={delTask}
