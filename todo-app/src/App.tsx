@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import shortid from 'shortid';
 
@@ -14,8 +14,6 @@ const AppStyled = styled.div`
 const App: React.FC = () => {
   const [task, setTask] = useState<string>('');
   const [itemList, setItemList] = useState<TodoItemProps[]>([]);
-  const [editTask, setEditTask] = useState<string>('');
-  const [editTaskId, setEditTaskId] = useState<string>('');
 
   const handleNewTask = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTask(e.target.value);
@@ -34,27 +32,11 @@ const App: React.FC = () => {
     setItemList(newItemList);
   };
 
-  const editItem = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditTaskId(e.target.id);
-    setEditTask(e.target.value);
-  };
-
-  useEffect(() => {
-    setItemList(
-      itemList.map((item) =>
-        item.id === editTaskId ? { ...item, task: editTask } : item
-      )
+  const editItem = (editId:string,editTask:string) => {
+    const editTaskList = itemList.map((item) =>
+      item.id === editId ? { ...item, task: editTask } : item
     );
-  }, [editTask]);
-
-
-  const setEditItem = () => {
-    const newTaskList = itemList.map((item) =>
-      item.id === editTaskId ? { ...item, task: editTask } : item
-    );
-    setItemList(newTaskList);
-    setEditTaskId('');
-    setEditTask('');
+    setItemList(editTaskList);
   };
 
   return (
@@ -68,8 +50,7 @@ const App: React.FC = () => {
         <TodoList
           items={itemList}
           delTodo={delTask}
-          onChangeItem={editItem}
-          onBlurItem={setEditItem}
+          onChangeItem={(e: React.ChangeEvent<HTMLInputElement>)=>editItem(e.target.id,e.target.value)}
         ></TodoList>
       </section>
     </AppStyled>
