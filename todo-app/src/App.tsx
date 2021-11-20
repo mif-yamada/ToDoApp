@@ -9,7 +9,13 @@ import { TodoItemProps } from './component/TodoItem';
 
 const AppStyled = styled.div`
   text-align: center;
+    color: rgb(41, 85, 129);
 `;
+const TodoItemsStyled = styled.div`
+  /* display: flex; */
+  justify-content: center;
+`;
+
 
 const App: React.FC = () => {
   const [task, setTask] = useState<string>('');
@@ -44,15 +50,15 @@ const App: React.FC = () => {
       <header>
         <h1>TODO-APP</h1>
       </header>
-      <section>
         <TodoForm task={task} onChange={handleNewTask}></TodoForm>
         <Button type='button' value='add' onClick={addTask}></Button>
+      <TodoItemsStyled >
         <TodoList
           items={itemList}
           delTodo={delTask}
           onChangeItem={(e: React.ChangeEvent<HTMLInputElement>)=>editItem(e.target.id,e.target.value)}
         ></TodoList>
-      </section>
+      </TodoItemsStyled>
     </AppStyled>
   );
 };

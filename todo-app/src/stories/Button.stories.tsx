@@ -10,7 +10,7 @@ export default {
   component: Button,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {
-    onClick: () => console.log('')
+    onClick: () => console.log(''),
   },
 } as ComponentMeta<typeof Button>;
 

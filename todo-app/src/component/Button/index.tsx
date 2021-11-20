@@ -10,10 +10,9 @@ interface ButtonProps {
 }
 
 const ButtonStyled = styled.button`
-  display: inline;
-  width:40px;
-  height:30px;
-  margin: 7px 20px;
+  display: inline-block;
+  width: 40px;
+  height: 30px;
   font-size: 24px;
   font-weight: bold;
   color: #fef9ff;
@@ -27,8 +26,8 @@ const ButtonStyled = styled.button`
     position: relative;
     top: 2px;
   }
-  ${props=> props.value === 'add' && AddButton};
-  ${props=> props.value === 'del' && DelButton};
+  ${(props) => props.value === 'add' && AddButton};
+  ${(props) => props.value === 'del' && DelButton};
 `;
 
 const AddButton = css`
@@ -39,7 +38,6 @@ const AddButton = css`
 const DelButton = css`
   background-color: rgb(154, 171, 234);
   box-shadow: 0 2px 2px rgb(93, 104, 203);
-  float: left;
 `;
 
 export const Button: React.FC<ButtonProps> = (props: ButtonProps) => {

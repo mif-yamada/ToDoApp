@@ -12,6 +12,8 @@ const TodoItemStyled = styled.input`
   display: inline-block;
   width: 300px;
   height: 30px;
+  margin-right: 20px;
+  font-size: 18px;
 `;
 
 export const TodoItem: React.FC<TodoItemProps> = (props: TodoItemProps) => {

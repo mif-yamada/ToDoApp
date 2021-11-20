@@ -11,20 +11,21 @@ interface TodoListProps {
 }
 
 const TodoListStyled = styled.ul`
+  display: inline-block;
   text-align: center;
   background: #fffcf4;
-  border-radius: 8px; /*角の丸み*/
-  box-shadow: 0px 0px 5px silver; /*5px=影の広がり具合*/
+  border-radius: 8px;
+  box-shadow: 0px 0px 5px silver;
   padding: 0;
-  position: relative;
+  /* position: relative; */
 `;
 
 const TodoItemsStyled = styled.li`
-  display: inline-block;
-  text-align: center;
-  line-height: 1.5;
-  padding: 0.5em 0;
+  display: block;
   list-style-type: none;
+  margin:10px 20px;
+  width:400px;
+  height: 40px;
 `;
 
 export const TodoList: React.FC<TodoListProps> = (props: TodoListProps) => {
