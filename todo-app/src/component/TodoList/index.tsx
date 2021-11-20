@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import shortid from 'shortid';
 
 import { Button } from '../Button';
 import { TodoItem, TodoItemProps } from '../TodoItem';
@@ -38,9 +37,10 @@ export const TodoList: React.FC<TodoListProps> = (props: TodoListProps) => {
   return (
     <TodoListStyled>
       {items.map(item => {
-        const uniqueId = shortid.generate();
         return (
-          <TodoItemsStyled key={uniqueId}>
+          //liのkeyが変更され、再描画が入ってしまった
+          //inputのshortid(id)を渡すことで解決
+          <TodoItemsStyled key={item.id}>
             <TodoItem
               id={item.id}
               task={item.task}

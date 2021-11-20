@@ -47,7 +47,7 @@ const App: React.FC = () => {
     );
   }, [editTask]);
 
-  // TODO: onBlur編集適応
+
   const setEditItem = () => {
     const newTaskList = itemList.map((item) =>
       item.id === editTaskId ? { ...item, task: editTask } : item
@@ -69,7 +69,7 @@ const App: React.FC = () => {
           items={itemList}
           delTodo={delTask}
           onChangeItem={editItem}
-          // onBlurItem={setEditItem}
+          onBlurItem={setEditItem}
         ></TodoList>
       </section>
     </AppStyled>
