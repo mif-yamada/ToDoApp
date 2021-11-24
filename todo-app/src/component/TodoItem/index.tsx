@@ -4,8 +4,9 @@ import styled from '@emotion/styled';
 export interface TodoItemProps {
   id: string;
   task: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+}
+interface TodoItemEventProps extends TodoItemProps {
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const TodoItemStyled = styled.input`
@@ -16,15 +17,16 @@ const TodoItemStyled = styled.input`
   font-size: 18px;
 `;
 
-export const TodoItem: React.FC<TodoItemProps> = (props: TodoItemProps) => {
-  const { id, task, onChange, onBlur} = props;
+export const TodoItem: React.FC<TodoItemEventProps> = (
+  props: TodoItemEventProps
+) => {
+  const { id, task, onChange } = props;
   return (
     <TodoItemStyled
       type='text'
       id={id}
       value={task}
       onChange={onChange}
-      onBlur={onBlur}
     ></TodoItemStyled>
   );
 };

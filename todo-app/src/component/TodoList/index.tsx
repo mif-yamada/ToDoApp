@@ -6,8 +6,7 @@ import { TodoItem, TodoItemProps } from '../TodoItem';
 interface TodoListProps {
   items: TodoItemProps[];
   delTodo: (e: React.MouseEvent<HTMLElement>) => void;
-  onChangeItem?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlurItem?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  onChangeItem: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const TodoListStyled = styled.ul`
@@ -17,27 +16,21 @@ const TodoListStyled = styled.ul`
   border-radius: 8px;
   box-shadow: 0px 0px 5px silver;
   padding: 0;
-  /* position: relative; */
 `;
 
 const TodoItemsStyled = styled.li`
   display: block;
   list-style-type: none;
-  margin:10px 20px;
-  width:400px;
+  margin: 10px 20px;
+  width: 400px;
   height: 40px;
 `;
 
 export const TodoList: React.FC<TodoListProps> = (props: TodoListProps) => {
-  const {
-    items,
-    delTodo,
-    onChangeItem,
-    onBlurItem,
-  } = props;
+  const { items, delTodo, onChangeItem } = props;
   return (
     <TodoListStyled>
-      {items.map(item => {
+      {items.map((item) => {
         return (
           //liのkeyが変更され、再描画が入ってしまった
           //inputのshortid(id)を渡すことで解決
@@ -46,8 +39,7 @@ export const TodoList: React.FC<TodoListProps> = (props: TodoListProps) => {
               id={item.id}
               task={item.task}
               onChange={onChangeItem}
-              onBlur={onBlurItem}
-            ></TodoItem>
+            />
             <Button
               id={item.id}
               type='button'
@@ -55,8 +47,8 @@ export const TodoList: React.FC<TodoListProps> = (props: TodoListProps) => {
               onClick={delTodo}
             ></Button>
           </TodoItemsStyled>
-        );}
-        )}
+        );
+      })}
     </TodoListStyled>
   );
 };

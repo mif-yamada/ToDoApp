@@ -12,10 +12,8 @@ const AppStyled = styled.div`
     color: rgb(41, 85, 129);
 `;
 const TodoItemsStyled = styled.div`
-  /* display: flex; */
   justify-content: center;
 `;
-
 
 const App: React.FC = () => {
   const [task, setTask] = useState<string>('');
