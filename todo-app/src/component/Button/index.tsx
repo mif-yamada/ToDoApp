@@ -3,10 +3,10 @@ import styled from '@emotion/styled/macro';
 import { css } from '@emotion/react';
 
 interface ButtonProps {
-  id?: string;
-  type: 'button' | 'reset' | 'submit' | undefined;
+  id: string;
+  type: 'button' | 'reset' | 'submit';
   value: 'add' | 'del';
-  onClick: (e: React.MouseEvent<HTMLElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 const ButtonStyled = styled.button`
@@ -41,10 +41,10 @@ const DelButton = css`
 `;
 
 export const Button: React.FC<ButtonProps> = (props: ButtonProps) => {
-  const { id, type, value, onClick } = props;
+  const { id, type, value,onClick } = props;
   const label = value === 'add' ? '+' : '−';
   return (
-    <ButtonStyled id={id} type={type} value={value} onClick={onClick}>
+    <ButtonStyled id={id} type={type} value={value} onClick={onClick} >
       {label}
     </ButtonStyled>
   );

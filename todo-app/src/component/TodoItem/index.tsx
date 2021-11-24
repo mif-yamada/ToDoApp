@@ -1,15 +1,20 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { useFormContext } from 'react-hook-form';
+import { Button } from '../Button';
 
 export interface TodoItemProps {
   id: string;
-  task: string;
+  task?: string;
 }
-interface TodoItemEventProps extends TodoItemProps {
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+interface TodoItemElementProps extends TodoItemProps {
+  btnType: 'button' | 'reset' | 'submit';
+  btnValue: 'add' | 'del';
+  btnClicked?: (e: React.MouseEvent<HTMLElement>) => void;
+  onBlur?: () => void;
 }
 
-const TodoItemStyled = styled.input`
+const TodoInputStyled = styled.input`
   display: inline-block;
   width: 300px;
   height: 30px;
@@ -17,16 +22,35 @@ const TodoItemStyled = styled.input`
   font-size: 18px;
 `;
 
-export const TodoItem: React.FC<TodoItemEventProps> = (
-  props: TodoItemEventProps
+export const TodoItem: React.FC<TodoItemElementProps> = (
+  props: TodoItemElementProps
 ) => {
-  const { id, task, onChange } = props;
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+  const { id, task, btnType, btnValue, btnClicked } = props;
+  const name = `task-${props.id}`;
   return (
-    <TodoItemStyled
-      type='text'
-      id={id}
-      value={task}
-      onChange={onChange}
-    ></TodoItemStyled>
+    <div>
+      <TodoInputStyled
+        type='text'
+        id={id}
+        value={task}
+        {...register(name, {
+          required: '入力必須',
+          minLength: {
+            value: 5,
+            message: '5文字以上',
+          },
+          maxLength: {
+            value: 25,
+            message: '25文字以下',
+          },
+        })}
+      />
+      <Button id={id} type={btnType} value={btnValue} onClick={btnClicked} />
+      {errors.task && <p>{`*${errors.task.message}`}</p>}
+    </div>
   );
 };

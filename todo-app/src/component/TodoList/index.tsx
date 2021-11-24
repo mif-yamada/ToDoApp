@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { Button } from '../Button';
 import { TodoItem, TodoItemProps } from '../TodoItem';
 interface TodoListProps {
   items: TodoItemProps[];
-  delTodo: (e: React.MouseEvent<HTMLElement>) => void;
-  onChangeItem: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  delItem: (e: React.MouseEvent<HTMLElement>) => void;
+  editItem?:()=>void;
 }
 
 const TodoListStyled = styled.ul`
@@ -27,7 +26,7 @@ const TodoItemsStyled = styled.li`
 `;
 
 export const TodoList: React.FC<TodoListProps> = (props: TodoListProps) => {
-  const { items, delTodo, onChangeItem } = props;
+  const { items, delItem,editItem } = props;
   return (
     <TodoListStyled>
       {items.map((item) => {
@@ -38,14 +37,11 @@ export const TodoList: React.FC<TodoListProps> = (props: TodoListProps) => {
             <TodoItem
               id={item.id}
               task={item.task}
-              onChange={onChangeItem}
+              btnType='button'
+              btnValue='del'
+              btnClicked={delItem}
+              onBlur={editItem}
             />
-            <Button
-              id={item.id}
-              type='button'
-              value='del'
-              onClick={delTodo}
-            ></Button>
           </TodoItemsStyled>
         );
       })}
