@@ -20,13 +20,7 @@ const App: React.FC = () => {
 
   const methods = useForm<TodoItemProps>();
 
-  // const setNewId = () => {
-  //   setId(shortid.generate());
-  // };
-
   const addTask = (todoData:TodoItemProps) => {
-    console.log(todoData);
-    // console.log(todoData.task);
     const newTaskList = [...itemList, { id: newId, task: todoData.task}];
     setItemList(newTaskList);
     setId(shortid.generate());
@@ -39,13 +33,6 @@ const App: React.FC = () => {
     });
     setItemList(newItemList);
   };
-
-  // const editItem = (editId: string, editTask: string) => {
-  //   const editTaskList = itemList.map((item) =>
-  //     item.id === editId ? { ...item, task: editTask } : item
-  //   );
-  //   setItemList(editTaskList);
-  // };
 
   return (
     <FormProvider {...methods}>
