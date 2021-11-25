@@ -50,6 +50,7 @@ export const TodoList: React.FC<TodoListProps> = () => {
   };
 
   const editItem = (e: React.MouseEvent<HTMLElement>) => {
+    // TODO: データ送信
     const editId = Number(e.currentTarget.id);
   };
 
