@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import React from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import styled from '@emotion/styled';
 import shortid from 'shortid';
 
@@ -15,43 +15,60 @@ const TodoItemsStyled = styled.div`
 `;
 
 const App: React.FC = () => {
-  const [itemList, setItemList] = useState<TodoItemProps[]>([]);
-  const [newId, setId] = useState<string>(shortid.generate());
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TodoItemProps>();
 
-  const methods = useForm<TodoItemProps>();
-
-  const addTask = (todoData:TodoItemProps) => {
-    const newTaskList = [...itemList, { id: newId, task: todoData.task}];
-    setItemList(newTaskList);
-    setId(shortid.generate());
+  const addTask = (todoData: TodoItemProps) => {
+    console.log(todoData);
   };
 
-  const delTask = (e: React.MouseEvent<HTMLElement>) => {
-    const delId = e.currentTarget.id;
-    const newItemList = itemList.filter((item) => {
-      return (item.id !== delId);
-    });
-    setItemList(newItemList);
-  };
+  // const delTask = (
+  //   todoData: TodoItemProps[],
+  //   e: React.MouseEvent<HTMLElement>
+  // ) => {
+  //   const delId = e.currentTarget.id;
+  //   const newItemList = todoData.filter((item) => {
+  //     return item.id !== delId;
+  //   });
+  // };
 
   return (
-    <FormProvider {...methods}>
-      <AppStyled>
-        <header>
-          <h1>TODO-APP</h1>
-        </header>
-        <form onSubmit={methods.handleSubmit(addTask)}>
+    <AppStyled>
+      <header>
+        <h1>TODO-APP</h1>
+      </header>
+      <Controller
+        name='task'
+        control={control}
+        rules={{
+          required: '入力必須',
+          minLength: {
+            value: 5,
+            message: '5文字以上',
+          },
+          maxLength: {
+            value: 25,
+            message: '25文字以下',
+          },
+        }}
+        render={({ field:{value,onBlur,onChange}}) => (
           <TodoItem
-            id={newId}
+            id={shortid.generate()}
+            task={value}
+            onChange={onChange}
+            onBlur={onBlur}
             btnType='submit'
             btnValue='add'
           />
-        </form>
-        <TodoItemsStyled>
-          <TodoList items={itemList} delItem={delTask} ></TodoList>
-        </TodoItemsStyled>
-      </AppStyled>
-    </FormProvider>
+        )}
+      />
+      <TodoItemsStyled>
+        {/* <TodoList items={itemList} delItem={delTask}></TodoList> */}
+      </TodoItemsStyled>
+    </AppStyled>
   );
 };
 
