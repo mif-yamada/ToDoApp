@@ -3,7 +3,7 @@ import styled from '@emotion/styled/macro';
 import { css } from '@emotion/react';
 
 interface ButtonProps {
-  id: string;
+  id?: string;
   type: 'button' | 'reset' | 'submit';
   value: 'add' | 'del';
   onClick?: (e: React.MouseEvent<HTMLElement>) => void;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller,useFieldArray } from 'react-hook-form';
 import styled from '@emotion/styled';
 import shortid from 'shortid';
 
@@ -19,10 +19,17 @@ const App: React.FC = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<TodoItemProps>();
+    reset,
+  } = useForm<TodoItemProps>({
+    defaultValues: {
+      task:''
+    },
+  });
+
 
   const addTask = (todoData: TodoItemProps) => {
     console.log(todoData);
+    reset({ task: '' });
   };
 
   // const delTask = (
@@ -41,7 +48,7 @@ const App: React.FC = () => {
         <h1>TODO-APP</h1>
       </header>
       <Controller
-        name='task'
+        name={`task`}
         control={control}
         rules={{
           required: '入力必須',
@@ -54,14 +61,16 @@ const App: React.FC = () => {
             message: '25文字以下',
           },
         }}
-        render={({ field:{value,onBlur,onChange}}) => (
+        render={({ field: { value, onBlur, onChange } }) => (
           <TodoItem
-            id={shortid.generate()}
+            id={id}
             task={value}
             onChange={onChange}
             onBlur={onBlur}
             btnType='submit'
             btnValue='add'
+            btnClicked={handleSubmit(addTask)}
+            error={errors.task && `${errors.task.message}`}
           />
         )}
       />

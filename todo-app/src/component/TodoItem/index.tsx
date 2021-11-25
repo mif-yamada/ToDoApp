@@ -3,7 +3,8 @@ import styled from '@emotion/styled';
 import { Button } from '../Button';
 
 export interface TodoItemProps {
-  id: string;
+  'todo.0.task'?:string;
+  id?: string;
   task: string;
   error?: string;
 }
@@ -13,6 +14,7 @@ export interface TodoItemElementProps extends TodoItemProps {
   btnClicked?: (e: React.MouseEvent<HTMLElement>) => void;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  editTask?:(data:TodoItemProps)=>void;
 }
 
 const TodoInputStyled = styled.input`
