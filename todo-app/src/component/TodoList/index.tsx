@@ -108,8 +108,8 @@ export const TodoList: React.FC<TodoListProps> = () => {
                     message: '5文字以上',
                   },
                   maxLength: {
-                    value: 25,
-                    message: '25文字以下',
+                    value: 20,
+                    message: '20文字以下',
                   },
                 }}
                 render={({ field: { value, onBlur, onChange } }) => (
