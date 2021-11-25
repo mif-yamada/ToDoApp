@@ -17,6 +17,10 @@ const TodoFormStyled = styled.input`
 export const TodoForm: React.FC<TodoFormProps> = (props: TodoFormProps) => {
   const { task, onChange } = props;
   return (
-    <TodoFormStyled type="text" value={task} onChange={onChange}></TodoFormStyled>
+    <TodoFormStyled
+      type='text'
+      value={task}
+      onChange={onChange}
+    ></TodoFormStyled>
   );
 };

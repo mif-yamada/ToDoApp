@@ -18,7 +18,7 @@ const App: React.FC = () => {
         <h1>TODO-APP</h1>
       </header>
       <TodoItemsStyled>
-        <TodoList/>
+        <TodoList />
       </TodoItemsStyled>
     </AppStyled>
   );
