@@ -32,10 +32,10 @@ export const TodoList: React.FC<TodoListProps> = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<TodoListProps>({
+    mode: 'onChange',
     defaultValues: {
       todoData: [{ task: '' }],
     },
-    mode: 'onSubmit',
   });
 
   const { fields, append, remove, update } = useFieldArray({
@@ -117,7 +117,7 @@ export const TodoList: React.FC<TodoListProps> = () => {
                     index={index}
                     task={value as string}
                     onChange={onChange}
-                    onBlur={handleSubmit(onBlur)}
+                    onBlur={onBlur}
                     btnType='button'
                     btnValue='up'
                     btnClicked={editItem}
