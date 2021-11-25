@@ -47,35 +47,8 @@ const App: React.FC = () => {
       <header>
         <h1>TODO-APP</h1>
       </header>
-      <Controller
-        name={`task`}
-        control={control}
-        rules={{
-          required: '入力必須',
-          minLength: {
-            value: 5,
-            message: '5文字以上',
-          },
-          maxLength: {
-            value: 25,
-            message: '25文字以下',
-          },
-        }}
-        render={({ field: { value, onBlur, onChange } }) => (
-          <TodoItem
-            id={id}
-            task={value}
-            onChange={onChange}
-            onBlur={onBlur}
-            btnType='submit'
-            btnValue='add'
-            btnClicked={handleSubmit(addTask)}
-            error={errors.task && `${errors.task.message}`}
-          />
-        )}
-      />
       <TodoItemsStyled>
-        {/* <TodoList items={itemList} delItem={delTask}></TodoList> */}
+        <TodoList/>
       </TodoItemsStyled>
     </AppStyled>
   );

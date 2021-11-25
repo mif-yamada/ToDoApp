@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { Button } from '../Button';
 
 export interface TodoItemProps {
-  'todo.0.task'?:string;
+  index: number;
   id?: string;
   task: string;
   error?: string;
@@ -29,6 +29,7 @@ export const TodoItem: React.FC<TodoItemElementProps> = (
   props: TodoItemElementProps
 ) => {
   const {
+    index,
     id,
     task,
     error,
@@ -42,12 +43,17 @@ export const TodoItem: React.FC<TodoItemElementProps> = (
     <div>
       <TodoInputStyled
         type='text'
-        id={id}
+        id={String(index)}
         value={task}
         onChange={onChange}
         onBlur={onBlur}
       />
-      <Button id={id} type={btnType} value={btnValue} onClick={btnClicked} />
+      <Button
+        id={String(index)}
+        type={btnType}
+        value={btnValue}
+        onClick={btnClicked}
+      />
       {error && <p>{`*${error}`}</p>}
     </div>
   );
