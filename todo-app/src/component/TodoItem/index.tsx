@@ -9,19 +9,20 @@ export interface TodoItemProps {
 }
 export interface TodoItemElementProps extends TodoItemProps {
   btnType: 'button' | 'submit';
-  btnValue: 'add' | 'del';
+  btnValue: 'add' | 'del' | 'up';
   btnClicked: (e: React.MouseEvent<HTMLElement>) => void;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
-  editTask?: (data: TodoItemProps) => void;
+  delTask?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 const TodoInputStyled = styled.input`
-  display: inline-block;
+  display: float;
   width: 300px;
   height: 30px;
   margin-right: 20px;
   font-size: 18px;
+  float: left;
 `;
 
 const ErrorMessageStyled = styled.p`
@@ -44,6 +45,7 @@ export const TodoItem: React.FC<TodoItemElementProps> = (
     btnClicked,
     onChange,
     onBlur,
+    delTask,
   } = props;
   return (
     <div>
@@ -60,8 +62,20 @@ export const TodoItem: React.FC<TodoItemElementProps> = (
           id={String(index)}
           type={btnType}
           value={btnValue}
+          disabled={error !== ''}
           onClick={btnClicked}
         />
+        {index > 0 ? (
+          <Button
+            id={String(index)}
+            type='button'
+            value='del'
+            disabled={false}
+            onClick={delTask}
+          />
+        ) : (
+          ''
+        )}
       </div>
     </div>
   );

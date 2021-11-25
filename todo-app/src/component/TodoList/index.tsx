@@ -4,14 +4,8 @@ import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import styled from '@emotion/styled';
 
 import { TodoItem, TodoItemProps } from '../TodoItem';
-interface TodoListProps {
+export interface TodoListProps {
   todoData?: TodoItemProps[];
-}
-
-interface TodoListEventProps extends TodoListProps {
-  addItem?: (todoData: TodoItemProps) => void;
-  delItem?: (e: React.MouseEvent<HTMLElement>) => void;
-  editItem?: () => void;
 }
 
 const TodoListStyled = styled.ul`
@@ -27,11 +21,12 @@ const TodoItemsStyled = styled.li`
   display: block;
   list-style-type: none;
   margin: 20px 20px;
+  padding: 0 30px;
   width: 450px;
   height: 40px;
 `;
 
-export const TodoList: React.FC<TodoListEventProps> = () => {
+export const TodoList: React.FC<TodoListProps> = () => {
   const {
     control,
     handleSubmit,
@@ -43,7 +38,7 @@ export const TodoList: React.FC<TodoListEventProps> = () => {
     mode: 'onSubmit',
   });
 
-  const { fields, append, remove,update } = useFieldArray({
+  const { fields, append, remove, update } = useFieldArray({
     control,
     name: 'todoData' as never,
   });
@@ -52,6 +47,10 @@ export const TodoList: React.FC<TodoListEventProps> = () => {
     const newData = todoList?.todoData?.[0].task;
     append({ task: newData });
     update(0, { task: '' });
+  };
+
+  const editItem = (e: React.MouseEvent<HTMLElement>) => {
+    const editId = Number(e.currentTarget.id);
   };
 
   return (
@@ -119,8 +118,9 @@ export const TodoList: React.FC<TodoListEventProps> = () => {
                     onChange={onChange}
                     onBlur={handleSubmit(onBlur)}
                     btnType='button'
-                    btnValue='del'
-                    btnClicked={() => remove(index)}
+                    btnValue='up'
+                    btnClicked={editItem}
+                    delTask={() => remove(index)}
                     error={
                       errors?.todoData?.[index]?.task
                         ? `${errors?.todoData?.[index]?.task?.message}`
