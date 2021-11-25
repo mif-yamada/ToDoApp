@@ -20,26 +20,22 @@ const TodoListStyled = styled.ul`
   background: #fffcf4;
   border-radius: 8px;
   box-shadow: 0px 0px 5px silver;
-  padding: 0;
+  padding: 0 0 20px 0;
 `;
 
 const TodoItemsStyled = styled.li`
   display: block;
   list-style-type: none;
-  margin: 10px 20px;
-  width: 400px;
+  margin: 20px 20px;
+  width: 450px;
   height: 40px;
 `;
 
-export const TodoList: React.FC<TodoListEventProps> = (
-  props: TodoListEventProps
-) => {
-  // const { delItem, editItem } = props;
+export const TodoList: React.FC<TodoListEventProps> = () => {
   const {
     control,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<TodoListProps>({
     defaultValues: {
       todoData: [{ task: '' }],
@@ -47,103 +43,95 @@ export const TodoList: React.FC<TodoListEventProps> = (
     mode: 'onSubmit',
   });
 
-  const { fields, append, prepend, remove } = useFieldArray({
+  const { fields, append, remove,update } = useFieldArray({
     control,
     name: 'todoData' as never,
   });
 
   const addItem = (todoList: TodoListProps) => {
     const newData = todoList?.todoData?.[0].task;
-    prepend({ task: newData });
-    reset;
-  };
-
-  // const resetItem = {
-  //   reset;
-  // };
-
-  // const delItem = (e: React.MouseEvent<HTMLElement>)=>{
-  //   const delIndex = Number(e.currentTarget.id);
-  //   () => remove(delIndex);
-  // };
-
-  const editItem = (todoList: TodoListProps) => {
-    console.log();
+    append({ task: newData });
+    update(0, { task: '' });
   };
 
   return (
     <TodoListStyled>
       {fields.map((field, index) => {
         const taskName = `todoData.${index}.task`;
-        index === 0 ? (
-          <TodoItemsStyled key={field.id}>
-            <Controller
-              name={taskName as `todoData.${number}.task`}
-              control={control}
-              rules={{
-                required: '入力必須',
-                minLength: {
-                  value: 5,
-                  message: '5文字以上',
-                },
-                maxLength: {
-                  value: 25,
-                  message: '25文字以下',
-                },
-              }}
-              render={({ field: { value, onBlur, onChange } }) => (
-                <TodoItem
-                  index={index}
-                  task={value as string}
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  btnType='submit'
-                  btnValue='add'
-                  btnClicked={handleSubmit(addItem)}
-                  error={
-                    errors?.todoData?.[index]?.task
-                      ? `${errors?.todoData?.[index]?.task?.message}`
-                      : ''
-                  }
-                />
-              )}
-            />
-          </TodoItemsStyled>
-        ) : (
-          <TodoItemsStyled key={field.id}>
-            <Controller
-              name={taskName as `todoData.${number}.task`}
-              control={control}
-              rules={{
-                required: '入力必須',
-                minLength: {
-                  value: 5,
-                  message: '5文字以上',
-                },
-                maxLength: {
-                  value: 25,
-                  message: '25文字以下',
-                },
-              }}
-              render={({ field: { value, onBlur, onChange } }) => (
-                <TodoItem
-                  index={index}
-                  task={value as string}
-                  onChange={onChange}
-                  onBlur={handleSubmit(onBlur)}
-                  btnType='button'
-                  btnValue='del'
-                  btnClicked={() => remove(index)}
-                  error={
-                    errors?.todoData?.[index]?.task
-                      ? `${errors?.todoData?.[index]?.task?.message}`
-                      : ''
-                  }
-                />
-              )}
-            />
-          </TodoItemsStyled>
-        );
+        if (index === 0) {
+          return (
+            <TodoItemsStyled key={field.id}>
+              <Controller
+                name={taskName as `todoData.${number}.task`}
+                control={control}
+                defaultValue=''
+                rules={{
+                  required: '入力必須',
+                  minLength: {
+                    value: 5,
+                    message: '5文字以上',
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: '20文字以下',
+                  },
+                }}
+                render={({ field: { value, onBlur, onChange } }) => (
+                  <TodoItem
+                    index={index}
+                    task={value as string}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    btnType='submit'
+                    btnValue='add'
+                    btnClicked={handleSubmit(addItem)}
+                    error={
+                      errors?.todoData?.[index]?.task
+                        ? `${errors?.todoData?.[index]?.task?.message}`
+                        : ''
+                    }
+                  />
+                )}
+              />
+            </TodoItemsStyled>
+          );
+        } else {
+          return (
+            <TodoItemsStyled key={field.id}>
+              <Controller
+                name={taskName as `todoData.${number}.task`}
+                control={control}
+                rules={{
+                  required: '入力必須',
+                  minLength: {
+                    value: 5,
+                    message: '5文字以上',
+                  },
+                  maxLength: {
+                    value: 25,
+                    message: '25文字以下',
+                  },
+                }}
+                render={({ field: { value, onBlur, onChange } }) => (
+                  <TodoItem
+                    index={index}
+                    task={value as string}
+                    onChange={onChange}
+                    onBlur={handleSubmit(onBlur)}
+                    btnType='button'
+                    btnValue='del'
+                    btnClicked={() => remove(index)}
+                    error={
+                      errors?.todoData?.[index]?.task
+                        ? `${errors?.todoData?.[index]?.task?.message}`
+                        : ''
+                    }
+                  />
+                )}
+              />
+            </TodoItemsStyled>
+          );
+        }
       })}
     </TodoListStyled>
   );
