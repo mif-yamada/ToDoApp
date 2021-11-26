@@ -1,26 +1,57 @@
 import React from 'react';
-import styled from '@emotion/styled';
+import { useForm, Controller } from 'react-hook-form';
+
+import { TodoItem, TodoItemProps } from '../TodoItem';
 
 interface TodoFormProps {
-  task: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  addItem: (todoData: TodoItemProps) => void;
 }
 
-const TodoFormStyled = styled.input`
-  display: inline-block;
-  width: 300px;
-  height: 30px;
-  margin-right: 20px;
-  font-size: 18px;
-`;
-
 export const TodoForm: React.FC<TodoFormProps> = (props: TodoFormProps) => {
-  const { task, onChange } = props;
+  const { addItem } = props;
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    resetField,
+  } = useForm<TodoItemProps>({
+    mode: 'onChange',
+    defaultValues: {
+      task:''
+    }
+  });
+
+  const addTodo = (todoData: TodoItemProps) => {
+    addItem(todoData);
+    resetField('task');
+  };
+
   return (
-    <TodoFormStyled
-      type='text'
-      value={task}
-      onChange={onChange}
-    ></TodoFormStyled>
+    <form onSubmit={handleSubmit(addTodo)}>
+      <Controller
+        name='task'
+        control={control}
+        rules={{
+          required: '入力必須',
+          minLength: {
+            value: 5,
+            message: '5文字以上',
+          },
+          maxLength: {
+            value: 20,
+            message: '20文字以下',
+          },
+        }}
+        render={({ field: { value, onChange } }) => (
+          <TodoItem
+            task={value}
+            onChange={onChange}
+            btnType='submit'
+            btnValue='add'
+            error={errors.task ? `${errors.task.message}` : ''}
+          />
+        )}
+      />
+    </form>
   );
 };

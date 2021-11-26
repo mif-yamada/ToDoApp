@@ -1,16 +1,17 @@
 import React from 'react';
 import styled from '@emotion/styled';
+
 import { Button } from '../Button';
 
 export interface TodoItemProps {
-  index: number;
+  index?: number;
   task: string;
   error?: string;
 }
 export interface TodoItemElementProps extends TodoItemProps {
   btnType: 'button' | 'submit';
   btnValue: 'add' | 'del' | 'up';
-  btnClicked: (e: React.MouseEvent<HTMLElement>) => void;
+  btnClicked?: (e: React.MouseEvent<HTMLElement>) => void;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   delTask?: (e: React.MouseEvent<HTMLElement>) => void;
@@ -65,7 +66,7 @@ export const TodoItem: React.FC<TodoItemElementProps> = (
           disabled={error !== ''}
           onClick={btnClicked}
         />
-        {index > 0 ? (
+        {index !== undefined ? (
           <Button
             id={String(index)}
             type='button'

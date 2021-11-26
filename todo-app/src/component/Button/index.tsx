@@ -58,7 +58,7 @@ export const Button: React.FC<ButtonProps> = (props: ButtonProps) => {
       case 'del':
         return '−';
       case 'up':
-        return '▲';
+        return '⬆︎';
 
       default:
         break;

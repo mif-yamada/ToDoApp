@@ -7,7 +7,7 @@ const AppStyled = styled.div`
   text-align: center;
   color: rgb(41, 85, 129);
 `;
-const TodoItemsStyled = styled.div`
+const TodoFrontStyled = styled.div`
   justify-content: center;
 `;
 
@@ -17,9 +17,9 @@ const App: React.FC = () => {
       <header>
         <h1>TODO-APP</h1>
       </header>
-      <TodoItemsStyled>
+      <TodoFrontStyled>
         <TodoList />
-      </TodoItemsStyled>
+      </TodoFrontStyled>
     </AppStyled>
   );
 };
