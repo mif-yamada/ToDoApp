@@ -1,74 +1,90 @@
 import React from 'react';
-import styled from '@emotion/styled';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 
-import { TodoForm } from '../inputForm';
 import { TodoItem, TodoItemProps } from '../TodoItem';
+import { TodoListStyled, TodoItemsStyled } from '../TodoListStyled';
 
 export interface TodoListProps {
-  todoData?: TodoItemProps[];
+  addTask: string;
+  todoData: TodoItemProps[];
 }
-
-const TodoListStyled = styled.ul`
-  display: inline-block;
-  text-align: center;
-  background: #fffcf4;
-  border-radius: 8px;
-  box-shadow: 0px 0px 5px silver;
-  padding: 0 0 20px 0;
-`;
-
-const TodoItemsStyled = styled.li`
-  display: block;
-  list-style-type: none;
-  margin: 20px 20px;
-  padding-left: 30px;
-  width: 450px;
-  height: 40px;
-`;
 
 export const TodoList: React.FC = () => {
   const {
     control,
+    handleSubmit,
     formState: { errors },
+    resetField,
   } = useForm<TodoListProps>({
     mode: 'onChange',
+    defaultValues: {
+      addTask: '',
+    },
   });
 
   const { fields, append, remove, update } = useFieldArray<TodoListProps>({
     control,
-    name: 'todoData' as never,
+    name: 'todoData',
   });
 
   const dispatchData = () => {
     console.log(fields);
   };
 
-  const addItem = (todoData: TodoItemProps) => {
-    console.log(todoData);
-    append(todoData);
+  const addItem = (inputData: TodoListProps) => {
+    const newTodoData = inputData.addTask;
+    console.log(newTodoData);
+    append({ task: newTodoData });
+    resetField('addTask');
   };
 
   const delItem = (e: React.MouseEvent<HTMLElement>) => {
     const delIndex = Number(e.currentTarget.id);
     remove(delIndex);
+    console.log(fields);
   };
 
-  const editItem = (index: number, editValue: Partial<TodoItemProps>) => {
-    update(index, { task: editValue as string });
+  const editItem = (index: number, editTask: string) => {
+    update(index, { task: editTask });
+    console.log(fields);
   };
 
   return (
     <TodoListStyled>
       <TodoItemsStyled>
-        <TodoForm addItem={addItem} />
+        <form onSubmit={handleSubmit(addItem)}>
+          <Controller
+            name='addTask'
+            control={control}
+            rules={{
+              required: '入力必須',
+              minLength: {
+                value: 5,
+                message: '5文字以上',
+              },
+              maxLength: {
+                value: 20,
+                message: '20文字以下',
+              },
+            }}
+            render={({ field: { value, onChange } }) => (
+              <TodoItem
+                task={value}
+                onChange={onChange}
+                btnType='submit'
+                btnValue='add'
+                error={errors?.addTask ? `${errors?.addTask.message}` : ''}
+              />
+            )}
+          />
+        </form>
       </TodoItemsStyled>
       {fields.map((field, index) => {
-        const taskName = `todoData.${index}.task`;
+        const taskName: `todoData.${number}.task` = `todoData.${index}.task`;
         return (
           <TodoItemsStyled key={field.id}>
             <Controller
-              name={taskName as `todoData.${number}.task`}
+              name={taskName}
               control={control}
               rules={{
                 required: '入力必須',
@@ -89,7 +105,7 @@ export const TodoList: React.FC = () => {
                   btnType='button'
                   btnValue='up'
                   btnClicked={() => {
-                    editItem(index, value as Partial<TodoItemProps>);
+                    editItem(index, value);
                   }}
                   delTask={delItem}
                   error={
