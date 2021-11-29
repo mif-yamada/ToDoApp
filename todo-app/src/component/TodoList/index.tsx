@@ -1,8 +1,10 @@
 import React from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import { TodoItem, TodoItemProps } from '../TodoItem';
 import { TodoListStyled, TodoItemsStyled } from '../TodoListStyled';
+import { todoSchema } from '../../schema/schema';
 
 export interface TodoListProps {
   addTask: string;
@@ -17,6 +19,7 @@ export const TodoList: React.FC = () => {
     resetField,
   } = useForm<TodoListProps>({
     mode: 'onChange',
+    resolver:yupResolver(todoSchema),
     defaultValues: {
       addTask: '',
     },
@@ -56,17 +59,6 @@ export const TodoList: React.FC = () => {
           <Controller
             name='addTask'
             control={control}
-            rules={{
-              required: '入力必須',
-              minLength: {
-                value: 5,
-                message: '5文字以上',
-              },
-              maxLength: {
-                value: 20,
-                message: '20文字以下',
-              },
-            }}
             render={({ field: { value, onChange } }) => (
               <TodoItem
                 task={value}
@@ -86,17 +78,6 @@ export const TodoList: React.FC = () => {
             <Controller
               name={taskName}
               control={control}
-              rules={{
-                required: '入力必須',
-                minLength: {
-                  value: 5,
-                  message: '5文字以上',
-                },
-                maxLength: {
-                  value: 20,
-                  message: '20文字以下',
-                },
-              }}
               render={({ field: { value, onChange } }) => (
                 <TodoItem
                   index={index}
