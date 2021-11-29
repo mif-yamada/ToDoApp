@@ -59,9 +59,8 @@ export const Button: React.FC<ButtonProps> = (props: ButtonProps) => {
         return '−';
       case 'up':
         return '⬆︎';
-
       default:
-        break;
+        return '';
     }
   };
   const label = getMark();

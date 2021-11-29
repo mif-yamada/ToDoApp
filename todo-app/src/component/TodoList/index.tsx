@@ -3,8 +3,8 @@ import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { TodoItem, TodoItemProps } from '../TodoItem';
-import { TodoListStyled, TodoItemsStyled } from '../TodoListStyled';
-import { todoSchema } from '../../schema/schema';
+import { TodoListStyled, TodoItemsStyled } from './TodoListStyled';
+import { todoSchema, defaultValues } from '../../schema/schema';
 
 export interface TodoListProps {
   addTask: string;
@@ -20,9 +20,7 @@ export const TodoList: React.FC = () => {
   } = useForm<TodoListProps>({
     mode: 'onChange',
     resolver:yupResolver(todoSchema),
-    defaultValues: {
-      addTask: '',
-    },
+    defaultValues,
   });
 
   const { fields, append, remove, update } = useFieldArray<TodoListProps>({
