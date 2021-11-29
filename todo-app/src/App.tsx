@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Provider } from 'react-redux';
 
-// import { todoStore } from './redux/store';
+// import { todoStore } from './redux/store'
 import { TodoList } from './component/TodoList';
 
 const AppStyled = styled.div`
