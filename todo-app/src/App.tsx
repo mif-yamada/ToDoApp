@@ -1,9 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { Provider } from 'react-redux';
 
-// import { todoStore } from './redux/store';
-import { TodoList } from './component/TodoList';
+import { TodoList } from 'component/TodoList';
 
 const AppStyled = styled.div`
   text-align: center;
@@ -15,7 +13,6 @@ const TodoFrontStyled = styled.div`
 
 const App: React.FC = () => {
   return (
-    // <Provider store={todoStore}>
       <AppStyled>
         <header>
           <h1>TODO-APP</h1>
@@ -24,7 +21,6 @@ const App: React.FC = () => {
           <TodoList />
         </TodoFrontStyled>
       </AppStyled>
-    // </Provider>
   );
 };
 
