@@ -1,54 +1,104 @@
 import React from 'react';
-import styled from '@emotion/styled';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Button } from '../Button';
 import { TodoItem, TodoItemProps } from '../TodoItem';
-interface TodoListProps {
-  items: TodoItemProps[];
-  delTodo: (e: React.MouseEvent<HTMLElement>) => void;
-  onChangeItem: (e: React.ChangeEvent<HTMLInputElement>) => void;
+import { TodoListStyled, TodoItemsStyled } from './TodoListStyled';
+import { todoSchema, defaultValues } from '../../schema/schema';
+
+export interface TodoListProps {
+  addTask: string;
+  todoData: TodoItemProps[];
 }
 
-const TodoListStyled = styled.ul`
-  display: inline-block;
-  text-align: center;
-  background: #fffcf4;
-  border-radius: 8px;
-  box-shadow: 0px 0px 5px silver;
-  padding: 0;
-`;
+export const TodoList: React.FC = () => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    resetField,
+  } = useForm<TodoListProps>({
+    mode: 'onChange',
+    resolver:yupResolver(todoSchema),
+    defaultValues,
+  });
 
-const TodoItemsStyled = styled.li`
-  display: block;
-  list-style-type: none;
-  margin: 10px 20px;
-  width: 400px;
-  height: 40px;
-`;
+  const { fields, append, remove, update } = useFieldArray<TodoListProps>({
+    control,
+    name: 'todoData',
+  });
 
-export const TodoList: React.FC<TodoListProps> = (props: TodoListProps) => {
-  const { items, delTodo, onChangeItem } = props;
+  const dispatchData = () => {
+    console.log(fields);
+  };
+
+  const addItem = (inputData: TodoListProps) => {
+    const newTodoData = inputData.addTask;
+    console.log(newTodoData);
+    append({ task: newTodoData });
+    resetField('addTask');
+  };
+
+  const delItem = (e: React.MouseEvent<HTMLElement>) => {
+    const delIndex = Number(e.currentTarget.id);
+    remove(delIndex);
+    console.log(fields);
+  };
+
+  const editItem = (index: number, editTask: string) => {
+    update(index, { task: editTask });
+    console.log(fields);
+  };
+
   return (
     <TodoListStyled>
-      {items.map((item) => {
+      <TodoItemsStyled>
+        <form onSubmit={handleSubmit(addItem)}>
+          <Controller
+            name='addTask'
+            control={control}
+            render={({ field: { value, onChange } }) => (
+              <TodoItem
+                task={value}
+                onChange={onChange}
+                btnType='submit'
+                btnValue='add'
+                error={errors?.addTask ? `${errors?.addTask.message}` : ''}
+              />
+            )}
+          />
+        </form>
+      </TodoItemsStyled>
+      {fields.map((field, index) => {
+        const taskName: `todoData.${number}.task` = `todoData.${index}.task`;
         return (
-          //liのkeyが変更され、再描画が入ってしまった
-          //inputのshortid(id)を渡すことで解決
-          <TodoItemsStyled key={item.id}>
-            <TodoItem
-              id={item.id}
-              task={item.task}
-              onChange={onChangeItem}
+          <TodoItemsStyled key={field.id}>
+            <Controller
+              name={taskName}
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <TodoItem
+                  index={index}
+                  task={value}
+                  onChange={onChange}
+                  btnType='button'
+                  btnValue='up'
+                  btnClicked={() => {
+                    editItem(index, value);
+                  }}
+                  delTask={delItem}
+                  error={
+                    errors?.todoData?.[index]?.task
+                      ? `${errors?.todoData?.[index]?.task?.message}`
+                      : ''
+                  }
+                />
+              )}
             />
-            <Button
-              id={item.id}
-              type='button'
-              value='del'
-              onClick={delTodo}
-            ></Button>
           </TodoItemsStyled>
         );
       })}
+      {dispatchData()}
     </TodoListStyled>
   );
 };

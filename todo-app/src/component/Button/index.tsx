@@ -3,14 +3,15 @@ import styled from '@emotion/styled/macro';
 import { css } from '@emotion/react';
 
 interface ButtonProps {
-  id?: string;
-  type: 'button' | 'reset' | 'submit' | undefined;
-  value: 'add' | 'del';
-  onClick: (e: React.MouseEvent<HTMLElement>) => void;
+  id: string;
+  type: 'button' | 'submit';
+  value: 'add' | 'del' | 'up';
+  disabled: boolean;
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 const ButtonStyled = styled.button`
-  display: inline-block;
+  display: float;
   width: 40px;
   height: 30px;
   font-size: 24px;
@@ -20,6 +21,8 @@ const ButtonStyled = styled.button`
   cursor: pointer;
   border: none;
   border-radius: 40px;
+  float: left;
+  margin-right: 15px;
 
   &:active {
     box-shadow: none;
@@ -28,6 +31,7 @@ const ButtonStyled = styled.button`
   }
   ${(props) => props.value === 'add' && AddButton};
   ${(props) => props.value === 'del' && DelButton};
+  ${(props) => props.value === 'up' && UpButton};
 `;
 
 const AddButton = css`
@@ -40,11 +44,34 @@ const DelButton = css`
   box-shadow: 0 2px 2px rgb(93, 104, 203);
 `;
 
+const UpButton = css`
+  background-color: rgb(234, 217, 154);
+  box-shadow: 0 2px 2px rgb(203, 174, 93);
+`;
+
 export const Button: React.FC<ButtonProps> = (props: ButtonProps) => {
-  const { id, type, value, onClick } = props;
-  const label = value === 'add' ? '+' : '−';
+  const { id, type, value, disabled = false, onClick } = props;
+  const getMark = () => {
+    switch (value) {
+      case 'add':
+        return '+';
+      case 'del':
+        return '−';
+      case 'up':
+        return '⬆︎';
+      default:
+        return '';
+    }
+  };
+  const label = getMark();
   return (
-    <ButtonStyled id={id} type={type} value={value} onClick={onClick}>
+    <ButtonStyled
+      id={id}
+      type={type}
+      value={value}
+      disabled={disabled}
+      onClick={onClick}
+    >
       {label}
     </ButtonStyled>
   );
