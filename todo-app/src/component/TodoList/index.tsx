@@ -1,17 +1,26 @@
-import React from 'react';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import React, { useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
+import {
+  TodoItemsStyled,
+  TodoListStyled,
+} from 'component/TodoList/TodoListStyled';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { TodoItem, TodoItemProps } from '../TodoItem';
-import { TodoListStyled, TodoItemsStyled } from './TodoListStyled';
-import { todoSchema, defaultValues } from '../../schema/schema';
-
-export interface TodoListProps {
-  addTask: string;
-  todoData: TodoItemProps[];
-}
+import { AddTodo, DeleteTodo, UpdateTodo } from 'store/slice';
+import { TodoItem } from '../TodoItem';
+import { TodoListProps } from 'schema';
+import { todoSchema } from 'schema';
+import { getTodoState } from 'store/selector';
 
 export const TodoList: React.FC = () => {
+  const dispatch = useDispatch();
+  const todoItemList = useSelector(getTodoState);
+  const defaultValues = {
+    inputTask: '',
+    todoData: todoItemList.todoData,
+  };
+
   const {
     control,
     handleSubmit,
@@ -19,35 +28,35 @@ export const TodoList: React.FC = () => {
     resetField,
   } = useForm<TodoListProps>({
     mode: 'onChange',
-    resolver:yupResolver(todoSchema),
+    resolver: yupResolver(todoSchema),
     defaultValues,
   });
 
-  const { fields, append, remove, update } = useFieldArray<TodoListProps>({
+  const { fields, replace } = useFieldArray<TodoListProps>({
     control,
     name: 'todoData',
   });
 
-  const dispatchData = () => {
-    console.log(fields);
-  };
+  const replaceTodoData = () => replace(todoItemList.todoData);
+
+  useEffect(() => {
+    replaceTodoData();
+    console.log(todoItemList.todoData);
+  }, [todoItemList]);
 
   const addItem = (inputData: TodoListProps) => {
-    const newTodoData = inputData.addTask;
-    console.log(newTodoData);
-    append({ task: newTodoData });
-    resetField('addTask');
+    const newTodoData = inputData.inputTask;
+    dispatch(AddTodo(newTodoData));
+    resetField('inputTask');
   };
 
   const delItem = (e: React.MouseEvent<HTMLElement>) => {
     const delIndex = Number(e.currentTarget.id);
-    remove(delIndex);
-    console.log(fields);
+    dispatch(DeleteTodo({ index: delIndex, task: '' }));
   };
 
   const editItem = (index: number, editTask: string) => {
-    update(index, { task: editTask });
-    console.log(fields);
+    dispatch(UpdateTodo({ index: index, task: editTask }));
   };
 
   return (
@@ -55,7 +64,7 @@ export const TodoList: React.FC = () => {
       <TodoItemsStyled>
         <form onSubmit={handleSubmit(addItem)}>
           <Controller
-            name='addTask'
+            name='inputTask'
             control={control}
             render={({ field: { value, onChange } }) => (
               <TodoItem
@@ -63,7 +72,7 @@ export const TodoList: React.FC = () => {
                 onChange={onChange}
                 btnType='submit'
                 btnValue='add'
-                error={errors?.addTask ? `${errors?.addTask.message}` : ''}
+                error={errors?.inputTask ? `${errors?.inputTask.message}` : ''}
               />
             )}
           />
@@ -98,7 +107,6 @@ export const TodoList: React.FC = () => {
           </TodoItemsStyled>
         );
       })}
-      {dispatchData()}
     </TodoListStyled>
   );
 };
