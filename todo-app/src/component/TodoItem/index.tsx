@@ -3,12 +3,8 @@ import styled from '@emotion/styled';
 import { Input } from 'antd';
 
 import { TodoButton } from 'component/Button';
+import { TodoItemProps } from 'schema';
 
-export interface TodoItemProps {
-  index?: number;
-  task: string;
-  error?: string;
-}
 export interface TodoItemElementProps extends TodoItemProps {
   btnValue: 'add' | 'del' | 'up';
   btnClicked?: (e: React.MouseEvent<HTMLElement>) => void;
