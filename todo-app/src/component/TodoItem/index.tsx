@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { Input } from 'antd';
 
-import { Button } from 'component/Button';
+import { TodoButton } from 'component/Button';
 import { TodoItemProps } from 'schema';
 
 export interface TodoItemElementProps extends TodoItemProps {
-  btnType: 'button' | 'submit';
   btnValue: 'add' | 'del' | 'up';
   btnClicked?: (e: React.MouseEvent<HTMLElement>) => void;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -13,10 +13,9 @@ export interface TodoItemElementProps extends TodoItemProps {
   delTask?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
-const TodoInputStyled = styled.input`
+const TodoInputStyled = styled(Input)`
   display: float;
   width: 300px;
-  height: 30px;
   margin-right: 20px;
   font-size: 18px;
   float: left;
@@ -37,7 +36,6 @@ export const TodoItem: React.FC<TodoItemElementProps> = (
     index,
     task,
     error,
-    btnType,
     btnValue,
     btnClicked,
     onChange,
@@ -49,23 +47,21 @@ export const TodoItem: React.FC<TodoItemElementProps> = (
       <ErrorMessageStyled> {error && `*${error}`} </ErrorMessageStyled>
       <div>
         <TodoInputStyled
-          type='text'
+          placeholder='Basic usage'
           id={String(index)}
           value={task}
           onChange={onChange}
           onBlur={onBlur}
         />
-        <Button
+        <TodoButton
           id={String(index)}
-          type={btnType}
           value={btnValue}
           disabled={error !== ''}
           onClick={btnClicked}
         />
         {index !== undefined ? (
-          <Button
+          <TodoButton
             id={String(index)}
-            type='button'
             value='del'
             disabled={false}
             onClick={delTask}

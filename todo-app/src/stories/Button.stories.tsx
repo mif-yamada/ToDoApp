@@ -1,27 +1,25 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Button } from 'component/Button';
+import { TodoButton } from 'component/Button';
 
 export default {
-  title: 'Example/Button',
-  component: Button,
-} as ComponentMeta<typeof Button>;
+  title: 'Example/TodoButton',
+  component: TodoButton,
+} as ComponentMeta<typeof TodoButton>;
 
-const Template: ComponentStory<typeof Button> = (args) => (
-  <Button id={args.id} type={args.type} value={args.value} disabled={args.disabled}></Button>
+const Template: ComponentStory<typeof TodoButton> = (args) => (
+  <TodoButton id={args.id}  value={args.value} disabled={args.disabled}></TodoButton>
 );
 
 export const Primary = Template.bind({});
 Primary.args = {
-  type: 'button',
   value: 'add',
   disabled:false,
 };
 
 export const Secondary = Template.bind({});
 Secondary.args = {
-  type: 'button',
   value: 'del',
   disabled: false,
 };

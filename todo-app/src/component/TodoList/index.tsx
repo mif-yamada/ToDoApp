@@ -1,17 +1,18 @@
 import React, { useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  TodoItemsStyled,
-  TodoListStyled,
-} from 'component/TodoList/TodoListStyled';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AddTodo, DeleteTodo, UpdateTodo } from 'store/slice';
+import {
+  TodoItemsStyled,
+  TodoListStyled,
+} from 'component/TodoList/TodoListStyled';
 import { TodoItem } from '../TodoItem';
 import { TodoListProps } from 'schema';
 import { todoSchema } from 'schema';
 import { getTodoState } from 'store/selector';
+
 
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
@@ -41,7 +42,6 @@ export const TodoList: React.FC = () => {
 
   useEffect(() => {
     replaceTodoData();
-    console.log(todoItemList.todoData);
   }, [todoItemList]);
 
   const addItem = (inputData: TodoListProps) => {
@@ -62,7 +62,7 @@ export const TodoList: React.FC = () => {
   return (
     <TodoListStyled>
       <TodoItemsStyled>
-        <form onSubmit={handleSubmit(addItem)}>
+        {/* <form onSubmit={handleSubmit(addItem)}> */}
           <Controller
             name='inputTask'
             control={control}
@@ -70,13 +70,13 @@ export const TodoList: React.FC = () => {
               <TodoItem
                 task={value}
                 onChange={onChange}
-                btnType='submit'
                 btnValue='add'
+                btnClicked={handleSubmit(addItem)}
                 error={errors?.inputTask ? `${errors?.inputTask.message}` : ''}
               />
             )}
           />
-        </form>
+        {/* </form> */}
       </TodoItemsStyled>
       {fields.map((field, index) => {
         const taskName: `todoData.${number}.task` = `todoData.${index}.task`;
@@ -90,7 +90,6 @@ export const TodoList: React.FC = () => {
                   index={index}
                   task={value}
                   onChange={onChange}
-                  btnType='button'
                   btnValue='up'
                   btnClicked={() => {
                     editItem(index, value);

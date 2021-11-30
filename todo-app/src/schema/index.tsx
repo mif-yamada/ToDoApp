@@ -13,7 +13,6 @@ export interface TodoItemProps {
   task: string;
   error?: string;
 }
-
 export interface TodoListProps {
   inputTask: string;
   todoData: TodoItemProps[];
