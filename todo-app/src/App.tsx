@@ -13,14 +13,14 @@ const TodoFrontStyled = styled.div`
 
 const App: React.FC = () => {
   return (
-      <AppStyled>
-        <header>
-          <h1>TODO-APP</h1>
-        </header>
-        <TodoFrontStyled>
-          <TodoList />
-        </TodoFrontStyled>
-      </AppStyled>
+    <AppStyled>
+      <header>
+        <h1>TODO-APP</h1>
+      </header>
+      <TodoFrontStyled>
+        <TodoList />
+      </TodoFrontStyled>
+    </AppStyled>
   );
 };
 

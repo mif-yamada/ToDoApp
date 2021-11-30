@@ -1,26 +1,25 @@
 import React, { useEffect } from 'react';
-import { useAppSelector, useAppDispatch } from 'redux/hooks';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-
-import { TodoItem, TodoItemProps } from '../TodoItem';
 import {
-  TodoListStyled,
   TodoItemsStyled,
+  TodoListStyled,
 } from 'component/TodoList/TodoListStyled';
-import { todoSchema, defaultValues } from 'schema/schema';
-import { AddTodo, DeleteTodo, UpdateTodo } from 'redux/todoSlice';
-import { useSelector } from 'react-redux';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { AddTodo, DeleteTodo, TodoState, UpdateTodo } from 'redux/todoSlice';
+import { todoSchema } from 'schema/schema';
+import { TodoItem, TodoItemProps } from '../TodoItem';
+import { todoStore } from 'redux/store';
 
 export interface TodoListProps {
-  addTask: string;
+  inputTask: string;
   todoData: TodoItemProps[];
 }
 
 export const TodoList: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const todoItemList = useAppSelector((state) => state.todoData);
-  const selectorData = useSelector<TodoListProps, TodoItemProps[]>(
+  const dispatch = useDispatch();
+  const todoItemList = useSelector<TodoState, TodoItemProps[]>(
     (state) => state.todoData
   );
 
@@ -32,49 +31,38 @@ export const TodoList: React.FC = () => {
   } = useForm<TodoListProps>({
     mode: 'onChange',
     resolver: yupResolver(todoSchema),
-    defaultValues,
+    defaultValues: {
+      inputTask: '',
+      todoData: todoItemList,
+    },
   });
 
-  const { fields, replace, append, remove, update } =
-    useFieldArray<TodoListProps>({
-      control,
-      name: 'todoData',
-    });
+  const { fields, replace } = useFieldArray<TodoListProps>({
+    control,
+    name: 'todoData',
+  });
 
   const replaceTodoData = () => {
     replace(todoItemList);
-    console.log(todoItemList);
-    console.log(selectorData);
   };
 
-  // useEffect(() => {
-  //   replaceTodoData();
-  // }, []);
+  useEffect(() => {
+    replaceTodoData();
+  }, [todoStore.getState()]);
 
   const addItem = (inputData: TodoListProps) => {
-    const newTodoData = inputData.addTask;
-    // append({ task: newTodoData });
-    dispatch(
-      AddTodo({
-        task: newTodoData,
-      })
-    );
-    resetField('addTask');
-    // replaceTodoData();
-    // console.log(useAppSelector((state) => state.todoData));
+    const newTodoData = inputData.inputTask;
+    dispatch(AddTodo(newTodoData));
+    resetField('inputTask');
   };
 
   const delItem = (e: React.MouseEvent<HTMLElement>) => {
     const delIndex = Number(e.currentTarget.id);
-    // remove(delIndex);
-    dispatch(DeleteTodo({ index: delIndex,task:'' }));
-    // replaceTodoData();
+    dispatch(DeleteTodo({ index: delIndex, task: '' }));
   };
 
   const editItem = (index: number, editTask: string) => {
-    // update(index, { task: editTask });
     dispatch(UpdateTodo({ index: index, task: editTask }));
-    replaceTodoData();
   };
 
   return (
@@ -82,7 +70,7 @@ export const TodoList: React.FC = () => {
       <TodoItemsStyled>
         <form onSubmit={handleSubmit(addItem)}>
           <Controller
-            name='addTask'
+            name='inputTask'
             control={control}
             render={({ field: { value, onChange } }) => (
               <TodoItem
@@ -90,14 +78,12 @@ export const TodoList: React.FC = () => {
                 onChange={onChange}
                 btnType='submit'
                 btnValue='add'
-                error={errors?.addTask ? `${errors?.addTask.message}` : ''}
+                error={errors?.inputTask ? `${errors?.inputTask.message}` : ''}
               />
             )}
           />
         </form>
       </TodoItemsStyled>
-      {console.log(todoItemList)}
-      {console.log(selectorData)}
       {fields.map((field, index) => {
         const taskName: `todoData.${number}.task` = `todoData.${index}.task`;
         return (
