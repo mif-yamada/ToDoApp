@@ -8,14 +8,9 @@ import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AddTodo, DeleteTodo, TodoState, UpdateTodo } from 'redux/todoSlice';
-import { todoSchema } from 'schema/schema';
+import { TodoListProps, todoSchema } from 'schema/schema';
 import { TodoItem, TodoItemProps } from '../TodoItem';
 import { todoStore } from 'redux/store';
-
-export interface TodoListProps {
-  inputTask: string;
-  todoData: TodoItemProps[];
-}
 
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
@@ -68,7 +63,7 @@ export const TodoList: React.FC = () => {
   return (
     <TodoListStyled>
       <TodoItemsStyled>
-        <form onSubmit={handleSubmit(addItem)}>
+        {/* <form onSubmit={handleSubmit(addItem)}> */}
           <Controller
             name='inputTask'
             control={control}
@@ -76,13 +71,13 @@ export const TodoList: React.FC = () => {
               <TodoItem
                 task={value}
                 onChange={onChange}
-                btnType='submit'
                 btnValue='add'
+                btnClicked={handleSubmit(addItem)}
                 error={errors?.inputTask ? `${errors?.inputTask.message}` : ''}
               />
             )}
           />
-        </form>
+        {/* </form> */}
       </TodoItemsStyled>
       {fields.map((field, index) => {
         const taskName: `todoData.${number}.task` = `todoData.${index}.task`;
@@ -96,7 +91,6 @@ export const TodoList: React.FC = () => {
                   index={index}
                   task={value}
                   onChange={onChange}
-                  btnType='button'
                   btnValue='up'
                   btnClicked={() => {
                     editItem(index, value);
