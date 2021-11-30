@@ -17,5 +17,5 @@
     "jsx": "react-jsx",
     "baseUrl": "src"
   },
-  "include": ["src", "src/redux/todoSlice.ts"]
+  "include": ["src", "src/store/slice.ts"]
 }

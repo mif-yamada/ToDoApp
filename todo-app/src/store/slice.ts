@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TodoItemProps } from 'component/TodoItem';
+import { TodoItemProps } from 'schema';
+
 export interface TodoState {
   todoData: TodoItemProps[];
 }
@@ -15,8 +16,6 @@ const initialState: TodoState = {
 export const todoSlice = createSlice({
   name: 'todo',
   initialState,
-  // State値の更新
-  // state.todoData= をしないと値の更新がされなかった。
   reducers: {
     AddTodo: (state: TodoState, action: PayloadAction<string>) => {
       state.todoData = state.todoData.concat([{ task: action.payload }]);

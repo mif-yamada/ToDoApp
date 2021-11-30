@@ -1,6 +1,8 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import styled from '@emotion/styled';
 
+import { store } from 'store';
 import { TodoList } from 'component/TodoList';
 
 const AppStyled = styled.div`
@@ -13,14 +15,16 @@ const TodoFrontStyled = styled.div`
 
 const App: React.FC = () => {
   return (
-    <AppStyled>
-      <header>
-        <h1>TODO-APP</h1>
-      </header>
-      <TodoFrontStyled>
-        <TodoList />
-      </TodoFrontStyled>
-    </AppStyled>
+    <Provider store={store}>
+      <AppStyled>
+        <header>
+          <h1>TODO-APP</h1>
+        </header>
+        <TodoFrontStyled>
+          <TodoList />
+        </TodoFrontStyled>
+      </AppStyled>
+    </Provider>
   );
 };
 

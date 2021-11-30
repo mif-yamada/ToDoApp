@@ -7,21 +7,19 @@ import {
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AddTodo, DeleteTodo, TodoState, UpdateTodo } from 'redux/todoSlice';
-import { todoSchema } from 'schema/schema';
-import { TodoItem, TodoItemProps } from '../TodoItem';
-import { todoStore } from 'redux/store';
-
-export interface TodoListProps {
-  inputTask: string;
-  todoData: TodoItemProps[];
-}
+import { AddTodo, DeleteTodo, UpdateTodo } from 'store/slice';
+import { TodoItem } from '../TodoItem';
+import { TodoListProps } from 'schema';
+import { todoSchema } from 'schema';
+import { getTodoState } from 'store/selector';
 
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
-  const todoItemList = useSelector<TodoState, TodoItemProps[]>(
-    (state) => state.todoData
-  );
+  const todoItemList = useSelector(getTodoState);
+  const defaultValues = {
+    inputTask: '',
+    todoData: todoItemList.todoData,
+  };
 
   const {
     control,
@@ -31,10 +29,7 @@ export const TodoList: React.FC = () => {
   } = useForm<TodoListProps>({
     mode: 'onChange',
     resolver: yupResolver(todoSchema),
-    defaultValues: {
-      inputTask: '',
-      todoData: todoItemList,
-    },
+    defaultValues,
   });
 
   const { fields, replace } = useFieldArray<TodoListProps>({
@@ -42,13 +37,12 @@ export const TodoList: React.FC = () => {
     name: 'todoData',
   });
 
-  const replaceTodoData = () => {
-    replace(todoItemList);
-  };
+  const replaceTodoData = () => replace(todoItemList.todoData);
 
   useEffect(() => {
     replaceTodoData();
-  }, [todoStore.getState()]);
+    console.log(todoItemList.todoData);
+  }, [todoItemList]);
 
   const addItem = (inputData: TodoListProps) => {
     const newTodoData = inputData.inputTask;

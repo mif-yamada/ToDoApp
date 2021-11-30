@@ -8,5 +8,13 @@ export const todoSchema = yup.object().shape({
   todoData:yup.array(todoItemSchema)
 });
 
-// Reduxのstoreから初期値を持ってくる書き換え
-// 初期値はここで定義したほうが良いのでしょうか？
+export interface TodoItemProps {
+  index?: number;
+  task: string;
+  error?: string;
+}
+
+export interface TodoListProps {
+  inputTask: string;
+  todoData: TodoItemProps[];
+}

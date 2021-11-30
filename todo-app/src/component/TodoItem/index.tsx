@@ -2,12 +2,8 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { Button } from 'component/Button';
+import { TodoItemProps } from 'schema';
 
-export interface TodoItemProps {
-  index?: number;
-  task: string;
-  error?: string;
-}
 export interface TodoItemElementProps extends TodoItemProps {
   btnType: 'button' | 'submit';
   btnValue: 'add' | 'del' | 'up';
