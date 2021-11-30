@@ -5,6 +5,7 @@ import {
   MinusCircleFilled,
   UpCircleFilled,
 } from '@ant-design/icons';
+import styled from '@emotion/styled/macro';
 
 interface ButtonProps {
   id: string;
@@ -13,32 +14,46 @@ interface ButtonProps {
   onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
+const TodoButtonStyled = styled(Button)`
+  display: float;
+  float: left;
+`;
+
+const AddIcon = styled(PlusCircleFilled)`
+  font-size: 30px !important;
+  `;
+const DelIcon = styled(MinusCircleFilled)`
+  font-size: 30px !important;
+`;
+const UpIcon = styled(UpCircleFilled)`
+  font-size: 30px !important;
+`;
+
 export const TodoButton: React.FC<ButtonProps> = (props: ButtonProps) => {
   const { id, value, disabled = false, onClick } = props;
   const getMark = () => {
     switch (value) {
       case 'add':
-        return <PlusCircleFilled style={{ fontSize: '30px' }} />;
+        return <AddIcon />;
       case 'del':
-        return <MinusCircleFilled style={{ fontSize: '30px' }} />;
+        return <DelIcon />;
       case 'up':
-        return <UpCircleFilled style={{ fontSize: '30px' }} />;
+        return <UpIcon />;
       default:
         return '';
     }
   };
-  const label = getMark();
+  const iconStyle = getMark();
   return (
-    <Button
+    <TodoButtonStyled
       id={id}
       type='text'
       value={value}
-      icon={label}
+      icon={iconStyle}
       size='large'
       shape='circle'
       disabled={disabled}
       onClick={onClick}
-    >
-    </Button>
+    ></TodoButtonStyled>
   );
 };

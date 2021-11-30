@@ -13,6 +13,14 @@ export interface TodoItemElementProps extends TodoItemProps {
   delTask?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
+const TodoInputStyled = styled(Input)`
+  display: float;
+  width: 300px;
+  margin-right: 20px;
+  font-size: 18px;
+  float: left;
+`;
+
 const ErrorMessageStyled = styled.p`
   height: 18px;
   width: 100px;
@@ -38,13 +46,7 @@ export const TodoItem: React.FC<TodoItemElementProps> = (
     <div>
       <ErrorMessageStyled> {error && `*${error}`} </ErrorMessageStyled>
       <div>
-        <Input
-          style={{
-            display: 'float',
-            width: '300px',
-            fontSize: '18px',
-            float: 'left',
-          }}
+        <TodoInputStyled
           placeholder='Basic usage'
           id={String(index)}
           value={task}

@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  TodoItemsStyled,
-  TodoListStyled,
-} from 'component/TodoList/TodoListStyled';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AddTodo, DeleteTodo, UpdateTodo } from 'store/slice';
+import {
+  TodoItemsStyled,
+  TodoListStyled,
+} from 'component/TodoList/TodoListStyled';
 import { TodoItem } from '../TodoItem';
 import { TodoListProps } from 'schema';
 import { todoSchema } from 'schema';
@@ -42,7 +42,6 @@ export const TodoList: React.FC = () => {
 
   useEffect(() => {
     replaceTodoData();
-    console.log(todoItemList.todoData);
   }, [todoItemList]);
 
   const addItem = (inputData: TodoListProps) => {
